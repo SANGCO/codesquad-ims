@@ -1,0 +1,182 @@
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+{{> include/header}}
+  </head>
+  <body>
+    <div class="issues issues--wrap mdl-layout mdl-js-layout has-drawer is-upgraded">
+
+		{{> include/navigation}}
+
+      <main class="mdl-layout__content">
+        <div class="issues-back">
+          <a href="/" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon back-btn" title="go back" role="button">
+            <i class="material-icons" role="presentation">arrow_back</i>
+          </a>
+        </div>
+        
+        
+        
+        
+        <div class="issues__posts mdl-grid">
+        
+        {{#errorMessage}}
+        	<div class="alert alert-danger" role="alert">{{this}}</div>
+        {{/errorMessage}}
+        
+        {{#issue}}
+          <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+            <div class="mdl-card__menu">
+              <a href="/issues/{{id}}/updateForm" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">edit</i>
+              </a>
+           	   
+           	 <form action="/issues/{{id}}" method="POST">
+           	 	<input type="hidden" name="_method" value="delete" />
+               <button type="submit" class="mdl-button mdl-js-button mdl-button--icon"> <i class="material-icons">delete</i> </button>
+             </form>   
+           
+            </div>
+            
+            <div class="mdl-card__title mdl-color-text--grey-50">
+              <i class="material-icons">check_circle</i>
+              <h2 class="mdl-card__title-text">{{title}}</h2>
+            </div>
+            
+            <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+              <img class="minilogo" height="48" width="48" src="https://avatars2.githubusercontent.com/u/520500?v=3&s=140" alt="javajigi">
+              <div style="margin-right:20px;">
+                <div class="author-text">
+                  <strong>
+                  {{writer.userId}}
+                   <!--  <a href="https://github.com/javajigi" class="author">javajigi</a> -->
+                  </strong>
+                </div>
+                <span>2017-01-14</span>
+              </div>
+              <a href="/issue/1/setOpen" class="mdl-button mdl-button--colored mdl-js-button">
+                      Close issue
+              </a>
+			
+              <div class="section-spacer"></div>
+
+              <button id="milestone-menu" class="mdl-button mdl-js-button">
+                Milestone
+              </button>
+              <!-- milestone list -->
+              
+              <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                  for="milestone-menu">
+              {{#milestones}}
+	              <li class="mdl-menu__item mdl-button--accent milestones">
+	                <a href="/issues/{{issue.id}}/milestone/{{id}}">{{title}}</a>
+	              </li>
+			  {{/milestones}}
+              </ul>
+
+              <button id="label-menu" class="mdl-button mdl-js-button">
+                Label
+              </button>
+              <!-- label list -->
+              <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                  for="label-menu">
+              {{#originalLables}}
+	              <li class="mdl-menu__item mdl-button--accent">
+	                <a href="/issues/{{issue.id}}/label/{{id}}">{{title}}</a>
+	              </li>
+	          {{/originalLables}}
+              </ul>
+              <button id="assignee-menu" class="mdl-button mdl-js-button">
+                Assignee
+              </button>
+              <!-- label list -->
+              <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                  for="assignee-menu">
+             {{#users}}
+		          <li class="mdl-menu__item mdl-button--accent">
+		            <a href="/issues/{{issue.id}}/user/{{id}}">{{userId}}</a>
+		          </li>
+              {{/users}}
+              </ul>
+            </div>
+          
+            <div class="mdl-color-text--grey-700 mdl-card__supporting-text">
+              <p>{{contents}}</p>
+            </div>
+			
+            <div class="mdl-color-text--primary-contrast mdl-card__supporting-text comments">
+
+
+
+
+
+
+
+
+
+
+
+
+              <!-- comments start -->
+              
+              <div class="comment mdl-color-text--grey-700">
+                <header class="comment__header">
+                  <img class="comment__avatar2" height="48" width="48" src="https://avatars2.githubusercontent.com/u/520500?v=3&s=140" alt="javajigi">
+                  <div class="comment__author">
+                    <strong>
+                      <a>javajigi</a>
+
+                      
+                        
+                        
+                          <span>changed milestone 1 on 2017-01-14</span>
+                        
+                      
+                    </strong>
+                  </div>
+                </header>
+              </div>
+              <hr>
+              
+              
+              <!-- comments end -->
+            </div>
+            <form action="/issue/1/uploadFile" enctype="multipart/form-data" method="POST">
+              <div style="margin:10px;">
+                <input type="file" name="file" id="file" />
+                <button class="mdl-button" type="submit">upload file</button>
+              </div>
+            </form>
+            <div class="mdl-color-text--primary-contrast mdl-card__supporting-text new-comment">
+              <form class="comment-write" action="api/issues/{{id}}/replys" method="POST">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <textarea rows=5 class="mdl-textfield__input" id="reply" name="reply"></textarea>
+                  <label for="comment" class="mdl-textfield__label">Leave a comment</label>
+                </div>
+                <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+                  <i class="material-icons" role="presentation">check</i><span class="visuallyhidden">add comment</span>
+                </button>
+            </form>
+            </div>
+          </div>
+  
+      
+        </div>
+        {{/issue}}
+        
+        
+        
+        <footer class="mdl-mini-footer">
+          <div class="mdl-mini-footer--left-section">
+            <div class="mdl-logo mdl-color-text--grey-600">Proudly powered by <a href="https://github.com/Byeol">Byeol</a></div>
+          </div>
+        </footer>
+      </main>
+      <div class="mdl-layout__obfuscator"></div>
+    </div>
+{{> include/footer}}
+  </body>
+</html>
